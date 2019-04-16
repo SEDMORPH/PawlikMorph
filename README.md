@@ -14,28 +14,25 @@ Requires the following IDL routines (included):
 This README is also available in rich text if you prefer.
 
 ## 1. Input
------------
 The required input is in the form of FITS files.
 
 For SDSS data, given the object coordinates, small images can be cut out of the SDSS imaging fields. Alternatively, this option could be skipped if cut-outs already available. For any other data, the required input should be in the form of cut-outs centred roughly on the 'central pixel' of the object of interest (precise centring and image trimming options are available).
 
 ## 2. Directories
------------------
 The path to the input directory is specified as an input parameter. The input directory, e.g. 'TESTSAMPLE' , should contain a subdirectory 'data'  with all images for the analysis. The 'output' directory is created automatically within the parent directory.  
 
 ## 3. Running the code
-----------------------
 The analysis is done in two steps: 1) preparation of the cut-outs, during which the image size is checked and adjusted if necessary, with an option of defining the image centre; 2) analysis of the resulting cut-outs. 
 
 ### 3.1 For pre-prepared cutouts (any data)
 
-### 3.1.1 Preparing images for analysis 
+#### 3.1.1 Preparing images for analysis 
 	
 run_imgprep, ‘path’, ‘TESTSAMPLE’, /trim 
 
 This will check the size of each image in the ‘TESTSAMPLE/data’ directory and trim it if necessary - the desired size is a square with an odd number of pixels, divisible by 3, on each side, centred on the objects position pixel. **Note that the input image is overwritten by the trimmed one!**
 
-### 3.1.2  Running the analysis
+#### 3.1.2  Running the analysis
 		
 run_imganalysis, ‘path/’, ‘TESTSAMPLE’ , /aperpixmap - if run for the first time (or if want to analyse images larger than previously)
 		run_imganalysis, ‘path/’, ‘TESTSAMPLE’ 
@@ -56,13 +53,13 @@ Use also if images larger than previously are being analysed for the first time 
 
 Use if imaging fields + SDSS image parameters available (need a file imgparams.csv with RA, DEC, RUN, RERUN, CAMCOL, FIELD). In this case, additionally to the standard analysis, the photometric information from the SDSS FITS header are used to measure additional parameters, such as total magnitude, Sersic index. 
 
-### 3.2.1 Preparing images for analysis 
+#### 3.2.1 Preparing images for analysis 
 
 run_imgprep, ‘path/’, ‘TESTSAMPLE’, /sdss, /cutout
 
 This will cut out small images centred on the objects of interest and store the object coordinates in a file imgradec.csv, and the list of image names in imglist.csv. Optionally, larger cutouts can also be created for the purpose of estimating the sky background more reliably (set /largeimg keyword).
 
-### 3.2.2 Running the analysis
+#### 3.2.2 Running the analysis
 
 run_imganalysis, ‘path/’, ‘TESTSAMPLE’, /sdsscutout, /sdsshdr 
 		
@@ -74,7 +71,6 @@ Additionally:
 		
 
 ## 4. Output 
-------------------
 The output from the standard analysis includes a range of structural and morphological parameters. For detailed description see Pawlik et al. 2016 and the references therein.
 Image information is stored in imginfo_* files and the output parameters are saved in structpar_* files.
 
