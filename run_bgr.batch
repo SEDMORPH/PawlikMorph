@@ -1,0 +1,5 @@
+        path = '/Users/Milena/Documents/St_Andrews/Projects/MaNGA/'
+        sample = 'MaNGA_SDSS'
+        
+        run_imganalysis, path, sample, /imglist, /sdsscutout, /sdsshdr, /largeimg, /savecleanimg, /savepixelmap
+        

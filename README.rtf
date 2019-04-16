@@ -1,0 +1,292 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red0\green68\blue254;\red217\green11\blue0;\red0\green61\blue204;
+}
+{\*\expandedcolortbl;;\csgenericrgb\c0\c26667\c99608;\csgenericrgb\c85098\c4314\c0;\csgenericrgb\c0\c23922\c80000;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww15220\viewh14060\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+**************************************************************\
+\ul Some notes on the image analysis code - IDL\ulnone \
+\
+Written by: Milena Pawlik, September 2016\
+Last edited: June 2017\
+**************************************************************\
+\
+The code can be used on a single image or a set of many images. As it was written specifically for SDSS data it contains many options to use only when dealing with SDSS imaging but other data sets can be analysed as well (although this needs some polishing). It can be run on either real or mock images - separate procedures provided.\
+\
+Requires the following IDL routines (included):\
+- shuffle.pro\
+- writecol.pro.\
+\
+
+\b 1. Input\
+\
+
+\b0 The required input is in the form of FITS files.\
+\
+For SDSS data, given the object coordinates, small images can be cut out of the SDSS imaging fields. Alternatively, this option could be skipped if cut-outs already available. For any other data, the required input should be in the form of cut-outs centred roughly on the `central pixel\'92 of the object of interest (precise centring and image trimming options are available).\
+\
+
+\b 2. Directories
+\b0 \
+\
+The path to the input directory is specified as an input parameter. The input directory, e.g. \'91TESTSAMPLE\'92 , should contain a subdirectory 
+\i \cf2 \'91data\'92
+\i0 \cf0   with all images for the analysis. The 
+\i \cf2 `output\'92
+\i0 \cf0  directory is created automatically within the parent directory.  \
+\
+
+\b 3. Running the code\
+\
+
+\b0 The analysis is done in two steps: 1) preparation of the cut-outs, during which the image size is checked and adjusted if necessary, with an option of defining the image centre; 2) analysis of the resulting cut-outs. \
+\
+
+\b 	3.1 For pre-prepared cutouts (any data)\
+\
+		3.1.1 Preparing images for analysis \
+	
+\b0 \
+
+\i \cf2 		run_imgprep, \'91path\'92, \'91TESTSAMPLE\'92, /trim \
+		
+\i0 \cf0 - This will check the size of each image in the \'91TESTSAMPLE/data\'92 directory and trim it if necessary - the desired size is a square with an odd number of pixels, divisible by 3, on each side, centred on the objects position pixel.
+\b \cf3  \cf0 \ul \ulc0 Note that the input image is overwritten by the trimmed one!\
+
+\b0 \
+	\ulnone 	
+\b 3.1.2  Running the analysis\
+		\
+
+\i\b0 \cf2 		run_imganalysis, \'91path/\'92, \'91TESTSAMPLE\'92 , /aperpixmap 
+\i0 \cf0 - if run for the first time (or if want to analyse images 
+\b larger
+\b0  than previously)
+\b \
+		
+\i\b0 \cf2 run_imganalysis, \'91path/\'92, \'91TESTSAMPLE\'92 
+\i0\b \cf0 \
+	
+\b0 \
+		\ul When run for the first time, a keyword 
+\i \cf2 \ulc2 /aperpixmap
+\i0 \cf0 \ulc0  must be set.\ulnone  This will create circular pixel maps and save for future use to speed up the analysis. It is not recommended to keep the keyword set for subsequent runs as it is a time consuming step.\
+\ul Use also if images larger than previously are being analysed for the first time\ulnone  (because the size of the circular pixel maps must be 
+\i at least as large as the largest image to be analysed
+\i0 ).\
+\
+		\ul Other optional tasks:\ulnone \
+		
+\i \cf2 /imglist 
+\i0 \cf0 -  set if particular order of images being analysed is preferred; the order should be specified in 
+\i \cf2 \'91TESTSAMPLE/data/imglist.txt\'92
+\i0  \cf0  (list of image names); if not set, the code will analyse *all* images within the parent directory in an alphabetical order;\
+\cf2 		/
+\i savepixelmap
+\i0  \cf0 - save the pixel maps in *.fits files;\
+                 \cf2 /
+\i savecleanimg
+\i0 \cf0  - save the `clean\'92 images in *.fits files;\
+
+\i \cf2 		/noskybgr 
+\i0 \cf0 - if images already sky background-subtracted, set to skip this step during the analysis;\
+		
+\i \cf2 /noimgclean
+\i0 \cf0  - skip the image cleaning step (by default, the code cleans the images from nearby point sources that don\'92t overlap with the object of interest);\
+
+\i \cf2 		
+\i0 /
+\i nopixelmap
+\i0  \cf0 - use preprepared object pixel maps if available (e.g. from a previous run); saves time.\
+\
+\
+
+\b 	3.2 For large SDSS images\
+\
+
+\b0 	Use if imaging fields + SDSS image parameters available (need a file 
+\i \cf2 imgparams.csv\cf0  
+\i0 with RA, DEC, RUN, RERUN, CAMCOL, FIELD). In this case, additionally to the standard analysis, the photometric information from the SDSS FITS header are used to measure additional parameters, such as total magnitude, Sersic index. \
+
+\b \
+		3.2.1 Preparing images for analysis \
+
+\b0 \
+		
+\i \cf2 run_imgprep, \'91path/\'92, \'91TESTSAMPLE\'92, /sdss, /cutout\
+		
+\i0 \cf0 - This will cut out small images centred on the objects of interest and store the object coordinates in a file 
+\i \cf2 imgradec.csv
+\i0 ,\cf0  and the list of image names in 
+\i \cf2 imglist.csv
+\i0 . \cf0 Optionally, larger cutouts can also be created for the purpose of estimating the sky background more reliably (set 
+\i \cf2 /largeimg
+\i0 \cf0  keyword).\
+\
+
+\b 		3.2.2 Running the analysis\
+
+\b0 \
+
+\i \cf2 		run_imganalysis, \'91path/\'92, \'91TESTSAMPLE\'92, /sdsscutout\cf0 , \cf2 /sdsshdr\cf0  
+\i0 \
+		\
+		Optional tasks as in 2.1.2.\
+		Additionally:\
+		
+\i \cf2 /largeimg
+\i0 \cf0  - set if large images available for background estimation (if cut out during run_imgprep step)\
+    \
+		\
+\
+
+\b 4. Output files\
+
+\b0 \
+The output from the standard analysis includes a range of structural and morphological parameters. For detailed description see Pawlik et al. 2016 and the references therein.\
+Image information is stored in 
+\i \cf4 imginfo_*
+\i0 \cf0  files and the output parameters are saved in 
+\i \cf4 structpar_*
+\i0 \cf0  files.\
+\
+
+\i 	imginfo_*\
+\
+	
+\b id 
+\b0 -
+\i0  ID number, signifying the order in which the images were analysed;
+\i \
+	
+\b imgname 
+\i0\b0 - the name of the image FITS file;
+\i\b \
+	imgsize 
+\i0\b0 - image size [pixels];
+\i\b \
+	imgmin, imgmax 
+\i0\b0  - minimum/maximum pixel value in the image;
+\i\b \
+	skybgr 
+\i0\b0 - sky background estimate [counts/pixel]
+\i\b \
+	skybgrerr - 
+\i0\b0 standard deviation in the sky background [counts/pixel]
+\i\b \
+	skybgrflag 
+\i0\b0 - flag pointing to unreliable measurement of the sky background if set to 1;
+\i\b \
+	time 
+\i0\b0 - total analysis time;\
+\
+	
+\i structpar_*\
+\
+	
+\b id
+\b0  - 
+\i0  ID number, signifying the order in which the images were analysed (same as in
+\i  imginfo_*
+\i0 );\
+
+\i 	
+\b bpixx, bpixy
+\i0  
+\b0 - [x,y] position of the brightest pixel;\
+
+\i\b 	apixx, apixy
+\i0  
+\b0 - [x,y] position yielding minimum value of the rotational light-weighted asymmetry parameter;\
+
+\i\b 	mpixx, mpixy
+\i0  
+\b0 - [x,y] position yielding minimum value of the second order moment of light;\
+	
+\i\b rmax 
+\i0\b0 - the `maximum\'92 radius of the galaxy, defined as the distance between the furthest pixel in the object\'92s pixel map, with respect to the central brightest pixel;\
+	
+\i\b r20
+\i0\b0  - curve of growth radii defining a circular aperture that contains 20% of the total flux;\
+
+\i\b 	r50
+\i0\b0  - curve of growth radii defining a circular aperture that contains 50% of the total flux;\
+
+\i\b 	r80
+\i0\b0  - curve of growth radii defining a circular aperture that contains 80% of the total flux;\
+	
+\i\b r90
+\i0\b0  - curve of growth radii defining a circular aperture that contains 90% of the total flux;\
+	
+\i\b C2080
+\i0\b0  - the concentration index defined by the logarithmic ratio of  r20 and r80;\
+
+\i\b 	C5090
+\i0\b0  - the concentration index defined by the logarithmic ratio of  r50 and r90;\
+	
+\i\b A -
+\i0\b0  the asymmetry of light under image rotation about 180 degrees around [apixx,apixy] (background corrected);\
+
+\i\b          A_bgr -
+\i0\b0  the `background\'92 asymmetry associated with A;\
+        
+\i\b As 
+\i0\b0  - the shape asymmetry under image rotation about 180 degrees around [apixx,apixy];\
+	
+\i\b As90 
+\i0\b0  - the shape asymmetry under image rotation about 90 degrees around [apixx,apixy];\
+	
+\i\b S -
+\i0  
+\b0 the `clumpiness\'92 of the light distribution (background corrected);\
+	
+\i\b S_bgr -
+\i0\b0  the `background\'92 clumpiness associated with S;\
+	
+\i\b G
+\i0\b0  - the Gini index;\
+	
+\i\b M20
+\i0\b0  - the second-order moment of the brightest 20% of the total light;\
+\
+	
+\i\b mag
+\i0\b0  - total magnitude within the boundaries of the pixel map;\
+	
+\i\b mag_err 
+\i0\b0 - the error associated with mag;\
+	
+\i\b sb0 
+\i0\b0 - Sersic model\'92s best-fit parameter: the central surface brightness;\
+	
+\i\b sb0_err
+\i0\b0  - error associated with sb0;\
+	
+\i\b reff - 
+\i0\b0 Sersic model\'92s best-fit parameter: the effective radius;\
+	
+\i\b reff_err
+\i0\b0  - error associated with reff;\
+
+\i\b 	n - 
+\i0\b0 Sersic model\'92s best-fit parameter: the Sersic index;\
+	
+\i\b n_err
+\i0\b0  - error associated with n;
+\i\b \
+\
+
+\i0\b0 	
+\i warning_flags_*
+\i0 \
+\
+	This fits array contains any flags raised during the processing. Unless you understand what you are doing DO NOT USE RESULTS WHERE FLAG != 1\
+\
+\
+\
+	\
+	}
