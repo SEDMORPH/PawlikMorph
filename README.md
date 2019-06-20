@@ -48,6 +48,8 @@ Use also if images larger than previously are being analysed for the first time 
 - /noimgclean - skip the image cleaning step (by default, the code cleans the images from nearby point sources that don’t overlap with the object of interest);
 - /nopixelmap - use preprepared object pixel maps if available (e.g. from a previous run); saves time.
 
+e.g. for SDSS batch image processing
+run_imganalysis, '/path_to_my_files/', 'mysample', /imglist, /sdsscutout, /sdsshdr, /largeimg, /savecleanimg, /savepixelmap
 
 ### 3.2 For large SDSS images
 
