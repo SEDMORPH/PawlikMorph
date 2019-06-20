@@ -1,0 +1,3 @@
+sdsslcutout_168.37-0.90_rband.fits
+sdsslcutout_170.20+0.46_rband.fits
+sdsslcutout_169.18-0.21_rband.fits

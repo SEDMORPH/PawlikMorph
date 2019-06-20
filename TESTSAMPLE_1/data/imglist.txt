@@ -1,0 +1,3 @@
+sdsscutout_168.37-0.90_rband.fits
+sdsscutout_170.20+0.46_rband.fits
+sdsscutout_169.18-0.21_rband.fits

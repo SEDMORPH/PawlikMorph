@@ -1,0 +1,4 @@
+ra,dec,cutoutname,sdssimgname
+168.366,-0.902643,"sdsscutout_168.37-0.90_rband.fits","SDSS_756_44_1_351_r.fits"
+170.204,0.459259,"sdsscutout_170.20+0.46_rband.fits","SDSS_6793_40_5_64_r.fits"
+169.181,-0.213309,"sdsscutout_169.18-0.21_rband.fits","SDSS_6793_40_3_57_r.fits"
