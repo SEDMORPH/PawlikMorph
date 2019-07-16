@@ -11,7 +11,14 @@ Requires the following IDL routines (included):
 - shuffle.pro
 - writecol.pro.
 
-This README is also available in rich text if you prefer.
+## 0. To run on SDSS DR7 data
+step1 download data:
+(1) Follow instructions here: http://classic.sdss.org/dr7/tutorials/retrieveFITS.html
+(2) The name of the downloaded file is something like: drC?RUN=1331&RERUN=40&CAMCOL=6&FIELD=134&FILTER=r
+
+step2 run the code for SDSS data:
+(1)run_imgprep,'IMAGE_CODE/IMGANALYSIS/','SDSSIMAGE',/sdss,/cutout
+(2)run_imganalysis,'IMAGE_CODE/IMGANALYSIS/','SDSSIMAGE',/imglist, /aperpixmap, /savepixelmap, /savecleanimg, /sdsscutout, /sdsshdr,/largeimg
 
 ## 1. Input
 The required input is in the form of FITS files.
