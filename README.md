@@ -2,7 +2,7 @@
 # Some notes on the image analysis code - IDL
 
 ### Written by: Milena Pawlik, September 2016
-### Last edited: Apr 2018 by Vivienne Wild
+### Last edited: July 2019 by Vivienne Wild
 **************************************************************
 
 The code can be used on a single image or a set of many images. As it was written specifically for SDSS data it contains many options to use only when dealing with SDSS imaging but other data sets can be analysed as well (although this needs some polishing). It can be run on either real or mock images - separate procedures provided.
