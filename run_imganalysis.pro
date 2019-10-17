@@ -146,7 +146,7 @@ PRO run_imganalysis, dir, sample, imgname, imglist=imglist, sdsscutout=sdsscutou
                 stop
             Endif
         Endelse
-        mpaw_makeaperpixmaps, imagesize, /silent
+        mpaw_makeaperpixmaps, imagesize, dir_aper, /silent
     Endif
     
     For f = 0, n_elements(filters)-1 do begin
@@ -226,7 +226,7 @@ PRO run_imganalysis, dir, sample, imgname, imglist=imglist, sdsscutout=sdsscutou
         outfile2 = 'imginfo'
     
         ;; Data structure for storing additional parameters: outer asymmetries, fractional Gini indices
-        struct = {id:0L, Ao20:0.0, Ao50:0.0, Ao80:0.0, Ao90:0.0, G20:0.0, G50:0.0, G80:0.0, G90:0.0}
+        struct = {id:0L, Ao20:0.0, Ao20_bgr:0.0, Ao50:0.0, Ao50_bgr:0.0, Ao80:0.0, Ao80_bgr:0.0, Ao90:0.0, Ao90_bgr:0.0, G20:0.0, G50:0.0, G80:0.0, G90:0.0}
         out3 = replicate(struct,numimgs)
         ;outfile3 = 'extrapar_'+filters[f]+'band
         outfile3 = 'extrapar'
@@ -431,18 +431,18 @@ PRO run_imganalysis, dir, sample, imgname, imglist=imglist, sdsscutout=sdsscutou
         
                 ;; --- Outer asymmetry ---
                 If keyword_set(aout) then begin
-                    For i = 0, n_elements(rad)-1 do begin
-                        aperpixmapcut = mpaw_aperpixmap(img,rad[i],9,0.1)
+                    For j = 0, n_elements(rad)-1 do begin
+                        aperpixmapcut = mpaw_aperpixmap(npix,rad[j],9,0.1)
                         aperpixmapcut = mpaw_apercentre(aperpixmapcut,bpix)
                         Ao = mpaw_a(img,pixmap,aperpixmap,apix,rmax,angle,aperpixmapcut,/noisecorrect,/aout)
-                        If i eq 0 then Ao20 = Ao[0]
-                        If i eq 1 then Ao50 = Ao[0]
-                        If i eq 2 then Ao80 = Ao[0]
-                        If i eq 3 then Ao90 = Ao[0]  
-                        If i eq 0 then Ao20_bgr = Ao[1]
-                        If i eq 1 then Ao50_bgr = Ao[1]
-                        If i eq 2 then Ao80_bgr = Ao[1]
-                        If i eq 3 then Ao90_bgr = Ao[1]              
+                        If j eq 0 then Ao20 = Ao[0]
+                        If j eq 1 then Ao50 = Ao[0]
+                        If j eq 2 then Ao80 = Ao[0]
+                        If j eq 3 then Ao90 = Ao[0]  
+                        If j eq 0 then Ao20_bgr = Ao[1]
+                        If j eq 1 then Ao50_bgr = Ao[1]
+                        If j eq 2 then Ao80_bgr = Ao[1]
+                        If j eq 3 then Ao90_bgr = Ao[1]              
                     Endfor
                 Endif
         
@@ -509,7 +509,7 @@ PRO run_imganalysis, dir, sample, imgname, imglist=imglist, sdsscutout=sdsscutou
                     magerr = result[1]
             
                     print, prof[0]
-                    
+                    err = [0., 0., 0.]
                     ;; - Seric fits to the radial profiles
                     If prof[0] gt 0.0 then begin
                         guess = [prof[0]/5.,1.,2.5,psf_s12g,psf_s22g,psf_ratio]
@@ -612,7 +612,7 @@ PRO run_imganalysis, dir, sample, imgname, imglist=imglist, sdsscutout=sdsscutou
         
         ;; output flag : added by Yanmei Chen, Jan 2019
         mwrfits, flag, dir_out+'warning_flags_'+filters[f]+'band.fits',/create
-  
+        print, "done"
         Endfor ;; SDSS filters
 
     

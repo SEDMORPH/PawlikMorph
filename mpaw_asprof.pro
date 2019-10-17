@@ -3,7 +3,7 @@ Function mpaw_asprof, img, centroid, thresh, paths, getpixmaps=getpixmaps
     outpar = {As:fltarr(n_elements(thresh)), As90:fltarr(n_elements(thresh))}
 
     ;; - For each threshold:
-    For i = n_elements(thresh)-1 do begin
+    For i = 0, n_elements(thresh)-1 do begin
         
         ;; - Get the pixel map 
         If keyword_set(getpixmaps) then begin

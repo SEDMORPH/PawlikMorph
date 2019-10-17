@@ -32,7 +32,7 @@ Function mpaw_fitsersic, R, guess, prof, proferr, cov, err, weights, weight=weig
         If ind[0] ne -1 then weights[ind]=0.0
     Endif
         
-    bestParams = mpfitfun('mpaw_sersicfunction', R, prof, proferr, guess, yfit=yfit, weights=weights, /nan, parinfo=parinfo ,perr=err, covar=cov)
+    bestParams = mpfitfun('mpaw_sersicfunction', R, prof, proferr, guess, weights=weights, /nan, parinfo=parinfo ,perr=err, covar=cov)
   
     return, bestParams
     

@@ -227,7 +227,7 @@ PRO run_imgprep, dir, sample, imgname, sdss=sdss, cutout=cutout, trim=trim, cent
                 ;newimgname = strsplit(pathname,dir_in,/extract,/regex)
                 ;newimgname = strcompress(newimgname,/remove)
                 ;newimgname = dir_out+newimgname
-                newpath = dir_out+name
+                newpath = name
             
                 ;; -------------------------------------
                 ;; ----- Optional: image centering -----
@@ -256,8 +256,6 @@ PRO run_imgprep, dir, sample, imgname, sdss=sdss, cutout=cutout, trim=trim, cent
                 Endif else if not(keyword_set(centre)) then begin ;; End image centering 
                     ;; -------------------------------------
             
-                    print, '***'
-                    print, name
                     ;; ---- FINISH!! 
                      mpaw_sdsstrim, path, newpath 
                 Endif

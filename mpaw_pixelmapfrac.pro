@@ -148,8 +148,8 @@ Function mpaw_pixelmapfrac, img, pixelmap, frac
           
      
           
-         Endelse
-      Endelse
+      ;    Endelse
+      ; Endelse
   
     return, outskirtmask
 
