@@ -1,4 +1,4 @@
-Function mpaw_sbprof, img, maxaper, centroid, radii, photpar, err=err, cog=cog
+Function mpaw_sbprof, img, dir_aper, maxaper, centroid, radii, photpar, err=err, cog=cog
   
     imgsize = size(img)
     npix = imgsize[1]
@@ -34,7 +34,7 @@ Function mpaw_sbprof, img, maxaper, centroid, radii, photpar, err=err, cog=cog
         
         aper_id = ii + 1
         aper_rad = radii[ii]
-        tempmaskfile = 'aperpixmaps/aperture'+strcompress(string(ii),/remove)+'.fits'
+        tempmaskfile = dir_aper+'/aperture'+strcompress(string(ii),/remove)+'.fits'
         If file_test(tempmaskfile) eq 1 then begin
             tempmask = mrdfits(tempmaskfile,/fscale,/silent)
         Endif else if file_test(tempmaskfile) eq 0 then begin

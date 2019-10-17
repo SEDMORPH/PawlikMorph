@@ -1,4 +1,4 @@
-PRO mpaw_makeaperpixmaps, npix, annuli=annuli, silent=silent
+PRO mpaw_makeaperpixmaps, npix, dir, annuli=annuli, silent=silent
 
     cenpix = npix/2 + 1    
     r_aper = findgen(cenpix)+1.
@@ -26,8 +26,8 @@ PRO mpaw_makeaperpixmaps, npix, annuli=annuli, silent=silent
             Endelse
         
         Endif
-        
-        writefits, 'aperpixmaps/aperture'+strcompress(string(i),/remove)+'.fits', aperpixmap
+        If file_test(dir) eq 0 then spawn, 'mkdir '+ dir
+        writefits, dir+'/aperture'+strcompress(string(i),/remove)+'.fits', aperpixmap
         aper(i).map = aperpixmap
         
     Endfor

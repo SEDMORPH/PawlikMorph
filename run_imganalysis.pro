@@ -98,7 +98,8 @@ PRO run_imganalysis, dir, sample, imgname, imglist=imglist, sdsscutout=sdsscutou
     Endif
     
     dir_in = dir+sample+'/data/'
-    dir_out = dir+sample+'/output/'    
+    dir_out = dir+sample+'/output/'
+    dir_aper = dir+sample+'/aperpixmaps/'  
     If file_test(dir_out) eq 0 then spawn, 'mkdir '+ dir_out    
        
     ;; --- Specify image size in pixels ---
@@ -405,9 +406,9 @@ PRO run_imganalysis, dir, sample, imgname, imglist=imglist, sdsscutout=sdsscutou
                     photpar.darkvar = darkvar
                     photpar.b = b  
                     photpar.flux20 = flux20     
-                    result = mpaw_sbprof(img,aperpixmap,bpix,r_aper,photpar,/err,/cog) 
+                    result = mpaw_sbprof(img,dir_aper,aperpixmap,bpix,r_aper,photpar,/err,/cog) 
                 Endif else if not(keyword_set(sdsshdr)) then begin
-                    result = mpaw_sbprof(img,aperpixmap,bpix,r_aper,/cog)
+                    result = mpaw_sbprof(img,dir_aper,aperpixmap,bpix,r_aper,/cog)
                 Endif 
         
                 rad = result.rad
