@@ -80,6 +80,18 @@ Function mpaw_sdsscutout, imgname, stampname, ra, dec, stampsize
     y_min = cenpix[1] - delta
     y_max = cenpix[1] + delta
     
+    If x_min gt imgsize[1] or x_max gt imgsize[1] then begin
+        print, 'ERROR: Galaxy on images edge can not be analysed!'
+        print, 'RA:', ra, 'DEC:', dec
+        stop
+    Endif
+
+    If y_min gt imgsize[2] or y_max gt imgsize[2] then begin
+        print, 'ERROR: Galaxy on images edge can not be analysed!'
+        print, 'RA:', ra, 'DEC:', dec
+        stop
+    Endif
+
     stamp = img_rot[x_min:x_max,y_min:y_max]
     
     writefits, stampname, stamp, hdr 
