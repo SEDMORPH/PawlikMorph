@@ -2,23 +2,33 @@
 # Some notes on the image analysis code - IDL
 
 ### Written by: Milena Pawlik, September 2016
-### Last edited: July 2019 by Vivienne Wild
+### Last edited: October 2019 by Lewis McMillan
 **************************************************************
 
 The code can be used on a single image or a set of many images. As it was written specifically for SDSS data it contains many options to use only when dealing with SDSS imaging but other data sets can be analysed as well (although this needs some polishing). It can be run on either real or mock images - separate procedures provided.
 
-Requires the following IDL routines (included):
+### Requires the following IDL routines (included):
 - shuffle.pro
 - writecol.pro.
+### and the following non included IDL routines:
+ - [IDLAstro library](https://github.com/wlandsman/IDLAstro)
+ - CGERRORMSG.pro from the [Coyote library](http://www.idlcoyote.com/documents/programs.php#COYOTE_LIBRARY_DOWNLOAD)
+ - mpfit.pro and mpfitfun.pro from the [Markwardt library](http://cow.physics.wisc.edu/~craigm/idl/idl.html)
 
 ## 0. To run on SDSS DR7 data
-step1 download data:
-(1) Follow instructions here: http://classic.sdss.org/dr7/tutorials/retrieveFITS.html
-(2) The name of the downloaded file is something like: drC?RUN=1331&RERUN=40&CAMCOL=6&FIELD=134&FILTER=r
+- Step 1 download data:
+  - Follow instructions here: http://classic.sdss.org/dr7/tutorials/retrieveFITS.html
+  - The name of the downloaded file is something like: drC?RUN=1331&RERUN=40&CAMCOL=6&FIELD=134&FILTER=r
+  
+  Or
+  
+  - Use http://skyserver.sdss.org/CasJobs/SubmitJob.aspx to generate a csv file of objects. (Account required)
+  - Then use wget or https://github.com/lewisfish/SDSS-image-downloader to help download fits files and create the necessary imgparams.csv file required by PawlikMorph.
 
-step2 run the code for SDSS data:
-(1)run_imgprep,'IMAGE_CODE/IMGANALYSIS/','SDSSIMAGE',/sdss,/cutout
-(2)run_imganalysis,'IMAGE_CODE/IMGANALYSIS/','SDSSIMAGE',/imglist, /aperpixmap, /savepixelmap, /savecleanimg, /sdsscutout, /sdsshdr,/largeimg
+- Step 2 run the code for SDSS data:
+  - run_imgprep,'PATH','FOLDER',/sdss,/cutout
+  - run_imganalysis,'PATH','FOLDER',/imglist, /aperpixmap, /savepixelmap, /savecleanimg, /sdsscutout, /sdsshdr,/largeimg
+
 
 ## 1. Input
 The required input is in the form of FITS files.
