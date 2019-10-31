@@ -17,7 +17,7 @@ Function mpaw_skybgr, img
     yfit = gauss2dfit(img,coeff)
     fwhm_x = 2*sqrt(2*alog(2))*coeff[2]
     fwhm_y = 2*sqrt(2*alog(2))*coeff[3]
-    r_in = 2*max(fwhm_x,fwhm_y)
+    r_in = 2*(fwhm_x > fwhm_y)
     
     ;; Define the sky region
     skyind = where(distarr gt r_in)

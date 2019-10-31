@@ -277,7 +277,7 @@ PRO run_imganalysis, dir, sample, imgname, imglist=imglist, sdsscutout=sdsscutou
                 
                 If file_test(imgpath) ne 0 then begin
                     
-                img = mrdfits(imgpath)     
+                img = mrdfits(imgpath, /fscale)     
                 If keyword_set(largeimg) then limg = mrdfits(limgpath)
                 If keyword_set(softbias) then begin
                     img = img - 1000       
